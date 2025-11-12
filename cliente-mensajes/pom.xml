@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+         https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.ejemplo.karaf</groupId>
+        <artifactId>karaf-demo-parent</artifactId>
+        <version>1.0.0</version>
+    </parent>
+
+    <artifactId>cliente-mensajes</artifactId>
+    <packaging>bundle</packaging>
+    <name>Cliente Mensajes</name>
+
+    <dependencies>
+        <!-- Dependencia principal de OSGi -->
+        <dependency>
+            <groupId>org.osgi</groupId>
+            <artifactId>org.osgi.core</artifactId>
+            <version>6.0.0</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Dependencia hacia el bundle del servicio -->
+        <dependency>
+            <groupId>com.ejemplo.karaf</groupId>
+            <artifactId>servicio-mensajes</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <!-- 🔹 Compilador configurado para Java 22 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.11.0</version>
+                <configuration>
+                    <source>22</source>
+                    <target>22</target>
+                </configuration>
+            </plugin>
+
+            <!-- 🔹 Plugin que genera el bundle OSGi -->
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <version>5.1.9</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <instructions>
+                        <Bundle-Name>Cliente Mensajes</Bundle-Name>
+                        <Bundle-SymbolicName>com.ejemplo.karaf.cliente</Bundle-SymbolicName>
+                        <Bundle-Version>1.0.0</Bundle-Version>
+
+                        <!-- Paquete exportado -->
+                        <Export-Package>
+                            com.ejemplo.karaf.cliente
+                        </Export-Package>
+
+                        <!-- Paquetes importados necesarios -->
+                        <Import-Package>
+                            com.ejemplo.karaf.servicio.api,
+                            org.osgi.framework
+                        </Import-Package>
+
+                        <!-- Clase principal (activador OSGi) -->
+                        <Main-Class>com.ejemplo.karaf.cliente.ClienteActivator</Main-Class>
+                    </instructions>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
